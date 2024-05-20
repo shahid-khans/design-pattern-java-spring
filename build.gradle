@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+javadoc.options.encoding = 'UTF-8'
+compileJava.options.encoding = 'UTF-8'
+group = 'com.learn'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    testImplementation 'org.mockito:mockito-core:3.9.0'
+    testCompileOnly 'junit:junit:4.13.2'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.1'
+
+
+
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+    useJUnitPlatform()
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
