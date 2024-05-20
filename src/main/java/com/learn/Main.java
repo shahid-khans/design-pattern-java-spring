@@ -1,17 +1,46 @@
 package com.learn;
 
+import com.learn.price.PriceHandler;
+import com.learn.price.impl.ApiPriceHandler;
+import com.learn.price.impl.DatabasePriceHandler;
+import com.learn.price.impl.RedisPriceHandler;
+import com.learn.services.price.PriceService;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        //            case "productFromRedis" -> 100d;
+        //            case "productFromDb" -> 200d;
+        //            case "productFromApi" -> 300d;
+        //
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        Double price = null;
+        PriceHandler rpriceHandler = new RedisPriceHandler();
+        PriceHandler dpriceHandler = new DatabasePriceHandler();
+        PriceHandler apriceHandler = new ApiPriceHandler();
+        rpriceHandler.setNextHandler(dpriceHandler);
+        dpriceHandler.setNextHandler(apriceHandler);
+
+        PriceService priceService = new PriceService(rpriceHandler);
+
+        System.out.println("************Price From REDIS*************");
+        price = priceService.getPrice("productFromRedis");
+        System.out.println("price : "+ price);
+
+        System.out.println("************Price From DB*************");
+        price = priceService.getPrice("productFromDb");
+        System.out.println("price : "+ price);
+
+        System.out.println("************Price From API*************");
+        price = priceService.getPrice("productFromApi");
+        System.out.println("price : "+ price);
+
+        System.out.println("************Price Not Found*************");
+
+        price = priceService.getPrice("X");
+        System.out.println("price : "+ price);
+        System.out.println("***********END*************");
+
     }
 }

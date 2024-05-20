@@ -35,11 +35,11 @@ public class DatabasePriceHandlerTest {
 
     @Test
     public void testFetchPriceFromDatabase() {
-        when(priceRepository.findPriceByProductId("productFromDb")).thenReturn(100.0);
+        when(priceRepository.findPriceByProductId("productFromDb")).thenReturn(200.0);
 
         Double price = dbHandler.fetchPrice("productFromDb");
         assertNotNull(price);
-        assertEquals(100.0, price, 0.0);
+        assertEquals(200.0, price, 0.0);
     }
 
     @Test

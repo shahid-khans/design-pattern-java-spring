@@ -1,6 +1,7 @@
 package com.learn.price.impl;
 
 import com.learn.daos.price.PriceRepository;
+import com.learn.daos.price.impl.RedisDao;
 import com.learn.price.PriceHandler;
 
 
@@ -14,8 +15,8 @@ public class RedisPriceHandler implements PriceHandler {
 
     @Override
     public Double fetchPrice(String productId) {
-        System.out.println(">>> RedisPriceHandler");
-
+        System.out.println(">>>1. RedisPriceHandler");
+        this.priceRepository = new RedisDao();
 //        String priceStr = redisTemplate.opsForValue().get(productId);
         Double price = priceRepository.findPriceByProductId(productId);
         if (price != null) {

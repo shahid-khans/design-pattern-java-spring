@@ -1,3 +1,5 @@
+
+
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -45,3 +47,4 @@ bin/
 # Default ignored files
 /shelf/
 /workspace.xml
+/.idea/workspace.xml

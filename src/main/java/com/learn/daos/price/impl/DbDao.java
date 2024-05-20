@@ -1,14 +1,18 @@
 package com.learn.daos.price.impl;
 
-public class DbDao {
-    public Double getPriceByProductId(String productId) {
-        System.out.println(">>> DbDao:getPriceByProductId");
+import com.learn.daos.price.PriceRepository;
 
-        return switch (productId) {
-            case "productFromRedis" -> 100d;
-            case "productFromDb" -> 200d;
-            case "productFromApi" -> 300d;
-            default -> null;
-        };
+public class DbDao implements PriceRepository {
+    private Double getPriceByProductId(String productId) {
+        System.out.println(">>> DbDao:getPriceByProductId " + productId);
+
+        if (productId.equals("productFromDb")) return 200d;
+        else return null;
+
+    }
+
+    @Override
+    public Double findPriceByProductId(String productId) {
+        return getPriceByProductId(productId);
     }
 }

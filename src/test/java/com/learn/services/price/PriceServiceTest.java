@@ -43,6 +43,9 @@ public class PriceServiceTest {
         Double price = priceService.getPrice("productFromRedis");
         assertNotNull(price);
         assertEquals(100.0, price, 0.0);
+        verify(priceHandler, times(1)).fetchPrice("productFromRedis");
+        verify(priceHandler, never()).fetchPrice("productFromDb");
+        verify(priceHandler, never()).fetchPrice("productFromApi");
     }
 
     @Test
@@ -60,6 +63,8 @@ public class PriceServiceTest {
         Double price = priceService.getPrice("productFromDb");
         assertNotNull(price);
         assertEquals(200.0, price, 0.0);
+        verify(priceHandler, times(1)).fetchPrice("productFromDb");
+        verify(priceHandler, never()).fetchPrice("productFromApi");
     }
     @Test
     public void testFetchPriceFromApi() {
@@ -76,6 +81,7 @@ public class PriceServiceTest {
         Double price = priceService.getPrice("productFromApi");
         assertNotNull(price);
         assertEquals(300.0, price, 0.0);
+        verify(priceHandler, times(1)).fetchPrice("productFromApi");
     }
 
     @Test
@@ -93,5 +99,8 @@ public class PriceServiceTest {
         });
         Double price = priceService.getPrice("nonExistentProduct");
         assertNull(price);
+        verify(priceHandler, times(1)).fetchPrice("nonExistentProduct");
+        verify(priceHandler, times(1)).fetchPrice("nonExistentProduct");
+        verify(priceHandler, times(1)).fetchPrice("nonExistentProduct");
     }
 }

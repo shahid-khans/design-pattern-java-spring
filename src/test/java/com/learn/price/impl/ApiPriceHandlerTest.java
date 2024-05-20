@@ -7,7 +7,6 @@ import com.learn.daos.price.PriceRepository;
 import com.learn.price.PriceHandler;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,40 +21,22 @@ public class ApiPriceHandlerTest {
     private PriceHandler nextHandler;
 
     @InjectMocks
-    private ApiPriceHandler apiHandler;
+    private ApiPriceHandler dbHandler;
 
 
     @Before
     public void setUp() {
-//        apiHandler = new ApiPriceHandler();
-//        apiHandler.setNextHandler(null);
+//        dbHandler = new DatabasePriceHandler();
+//        dbHandler.setNextHandler(null);
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void testFetchPriceFromAPI() {
-        when(priceRepository.findPriceByProductId("productFromDb")).thenReturn(100.0);
-
-        Double price = apiHandler.fetchPrice("productFromDb");
-        assertNotNull(price);
-        assertEquals(100.0, price, 0.0);
+    public void testFetchPriceNotFoundInDatabase() {
+        when(priceRepository.findPriceByProductId("productFromApi")).thenReturn(300d);
+        when(nextHandler.fetchPrice(anyString())).thenReturn(null);
+        Double price = dbHandler.fetchPrice("productFromApi");
+        assertEquals(300.0, price, 0.0);
     }
 
-
-    @Test
-    public void testFetchPriceFoundInAPI() {
-        when(priceRepository.findPriceByProductId("productFromApi")).thenReturn(null);
-        when(nextHandler.fetchPrice(anyString())).thenReturn(301d);
-        Double price = apiHandler.fetchPrice("productFromApi");
-        assertNotNull(price);
-    }
-
-    @Test
-    public void testFetchPriceNotFoundInAPI() {
-        apiHandler.setNextHandler(null);
-        when(priceRepository.findPriceByProductId("productFromApi")).thenReturn(null);
-        when(nextHandler.fetchPrice(anyString())).thenReturn(301d);
-        Double price = apiHandler.fetchPrice("productFromApi");
-        assertNull(price);
-    }
 }

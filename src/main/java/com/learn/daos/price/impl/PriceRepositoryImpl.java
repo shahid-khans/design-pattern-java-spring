@@ -4,11 +4,9 @@ import com.learn.daos.price.PriceRepository;
 
 public class PriceRepositoryImpl implements PriceRepository {
 
-    DbDao dbDao = new DbDao();
+    PriceRepository dbDao = new DbDao();
     @Override
     public Double findPriceByProductId(String productId) {
-        System.out.println(">>> PriceRepositoryImpl");
-        Double price = dbDao.getPriceByProductId(productId);
-        return price;
+        return dbDao.findPriceByProductId(productId);
     }
 }
