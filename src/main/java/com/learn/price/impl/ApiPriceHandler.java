@@ -8,6 +8,8 @@ import com.learn.price.PriceHandler;
 public class ApiPriceHandler implements PriceHandler {
 
     private PriceRepository priceRepository ;
+    private boolean handle = PriceHandler.super.canHandle();
+
     private PriceHandler nextHandler;
 
     @Override
@@ -45,6 +47,11 @@ public class ApiPriceHandler implements PriceHandler {
 
     @Override
     public boolean canHandle() {
-        return PriceHandler.super.canHandle();
+        return this.handle;
+    }
+
+    public PriceHandler markHandle(boolean handle) {
+        this.handle = handle;
+        return this;
     }
 }

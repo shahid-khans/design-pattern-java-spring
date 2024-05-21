@@ -7,7 +7,7 @@ import com.learn.price.PriceHandler;
 
 public class RedisPriceHandler implements PriceHandler {
     private PriceRepository priceRepository;
-
+    private boolean handle = PriceHandler.super.canHandle();
     private PriceHandler nextHandler;
 
     @Override
@@ -36,6 +36,11 @@ public class RedisPriceHandler implements PriceHandler {
 
     @Override
     public boolean canHandle() {
-        return false;
+        return this.handle;
+    }
+
+    public PriceHandler markHandle(boolean handle) {
+        this.handle = handle;
+        return this;
     }
 }

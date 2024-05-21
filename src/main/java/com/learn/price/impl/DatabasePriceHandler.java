@@ -8,6 +8,7 @@ import com.learn.price.PriceHandler;
 public class DatabasePriceHandler implements PriceHandler {
 
     private PriceRepository priceRepository;
+    private boolean handle = PriceHandler.super.canHandle();
 
     private PriceHandler nextHandler;
 
@@ -34,4 +35,13 @@ public class DatabasePriceHandler implements PriceHandler {
         this.nextHandler = nextHandler;
     }
 
+    @Override
+    public boolean canHandle() {
+        return this.handle;
+    }
+
+    public PriceHandler markHandle(boolean handle) {
+        this.handle = handle;
+        return this;
+    }
 }

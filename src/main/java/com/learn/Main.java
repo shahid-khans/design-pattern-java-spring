@@ -17,9 +17,9 @@ public class Main {
         //
 
         Double price = null;
-        PriceHandler rpriceHandler = new RedisPriceHandler();
-        PriceHandler dpriceHandler = new DatabasePriceHandler();
-        PriceHandler apriceHandler = new ApiPriceHandler();
+        PriceHandler rpriceHandler = new RedisPriceHandler().markHandle(true);
+        PriceHandler dpriceHandler = new DatabasePriceHandler().markHandle(true);;
+        PriceHandler apriceHandler = new ApiPriceHandler().markHandle(true);;
         DynamicSequenceHandler dynamicSequenceHandler = new DynamicSequenceHandler();
 
         dynamicSequenceHandler.addHandler(rpriceHandler);

@@ -42,6 +42,15 @@ public class RedisPriceHandlerTest {
     }
 
     @Test
+    public void testFetchPriceFromRedisMarkedFalse() {
+        when(priceRepository.findPriceByProductId("productFromRedis")).thenReturn(100.0);
+        redisHandler.markHandle(false);
+        Double price = redisHandler.fetchPrice("productFromRedis");
+        assertNotNull(price);
+        assertEquals(0.0, price, 0.0);
+    }
+
+    @Test
     public void testFetchPriceNotFoundInRedis() {
         when(priceRepository.findPriceByProductId("productFromDb")).thenReturn(null);
         when(nextHandler.fetchPrice(anyString())).thenReturn(null);
