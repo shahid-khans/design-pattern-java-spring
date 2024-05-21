@@ -12,6 +12,11 @@ public class ApiPriceHandler implements PriceHandler {
 
     @Override
     public Double fetchPrice(String productId) {
+
+        if(!canHandle()) {
+            System.out.println(String.format("Skipping Handler %s ,canHandle is  %s", getClass().getName() , canHandle()));
+            return nextHandler != null ? nextHandler.fetchPrice(productId) : null;
+        }
         System.out.println(">>>3. ApiPriceHandler");
         this.priceRepository = new APIDao();
 
@@ -36,5 +41,10 @@ public class ApiPriceHandler implements PriceHandler {
     @Override
     public void setNextHandler(PriceHandler nextHandler) {
         this.nextHandler = nextHandler;
+    }
+
+    @Override
+    public boolean canHandle() {
+        return PriceHandler.super.canHandle();
     }
 }

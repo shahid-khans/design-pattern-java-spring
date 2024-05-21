@@ -3,6 +3,7 @@ package com.learn;
 import com.learn.price.PriceHandler;
 import com.learn.price.impl.ApiPriceHandler;
 import com.learn.price.impl.DatabasePriceHandler;
+import com.learn.price.impl.DynamicSequenceHandler;
 import com.learn.price.impl.RedisPriceHandler;
 import com.learn.services.price.PriceService;
 
@@ -19,10 +20,17 @@ public class Main {
         PriceHandler rpriceHandler = new RedisPriceHandler();
         PriceHandler dpriceHandler = new DatabasePriceHandler();
         PriceHandler apriceHandler = new ApiPriceHandler();
-        rpriceHandler.setNextHandler(dpriceHandler);
-        dpriceHandler.setNextHandler(apriceHandler);
+        DynamicSequenceHandler dynamicSequenceHandler = new DynamicSequenceHandler();
 
-        PriceService priceService = new PriceService(rpriceHandler);
+        dynamicSequenceHandler.addHandler(rpriceHandler);
+        dynamicSequenceHandler.addHandler(dpriceHandler);
+        dynamicSequenceHandler.addHandler(apriceHandler);
+
+//        rpriceHandler.setNextHandler(dpriceHandler);
+//        dpriceHandler.setNextHandler(apriceHandler);
+
+//        PriceService priceService = new PriceService(rpriceHandler);
+        PriceService priceService = new PriceService(dynamicSequenceHandler);
 
         System.out.println("************Price From REDIS*************");
         price = priceService.getPrice("productFromRedis");

@@ -13,6 +13,10 @@ public class DatabasePriceHandler implements PriceHandler {
 
     @Override
     public Double fetchPrice(String productId) {
+        if(!canHandle()) {
+            System.out.println(String.format("Skipping Handler %s ,canHandle is  %s", getClass().getName() , canHandle()));
+            return nextHandler != null ? nextHandler.fetchPrice(productId) : null;
+        }
         System.out.println(">>>2. DatabasePriceHandler");
         this.priceRepository = new DbDao();
 
@@ -29,4 +33,5 @@ public class DatabasePriceHandler implements PriceHandler {
     public void setNextHandler(PriceHandler nextHandler) {
         this.nextHandler = nextHandler;
     }
+
 }
