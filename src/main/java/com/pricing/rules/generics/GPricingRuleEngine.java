@@ -18,16 +18,15 @@ public class GPricingRuleEngine {
 
         for (Rule<PricingContext,Double> rule : rules) {
 
-            if (rule instanceof GCompoundRule<PricingContext, Double> compoundRule) {
+            if (rule instanceof GCompoundRule) {
                 System.out.println(">> execute compound rule \n" + rule.getClass());
-                if (compoundRule.evaluate(context)) {
-                    price = compoundRule.execute(context);
+                if (rule.evaluate(context)) {
+                    price = rule.execute(context);
                 }
             } else if (rule.evaluate(context)) {
                 System.out.println(">>> execute single rule \n" + rule.getClass());
                 price = rule.execute(context);
             }
-//                if(rule.evaluate(context)) price = rule.execute(context);
         }
 
         return price;
